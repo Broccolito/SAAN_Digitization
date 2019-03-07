@@ -17,11 +17,11 @@ SAAN = function(pco2 = 22.3, ph = 7.31, hb = 16.7){
   }
   
   if(ph < 6.6 | ph > 8){
-    stop("pco2 value out of bound...")
+    stop("ph value out of bound...")
   }
   
   if(hb < 0 | hb > 100){
-    stop("pco2 value out of bound...")
+    stop("hb value out of bound...")
   }
   
   load("hb_bex_mat.rda")
