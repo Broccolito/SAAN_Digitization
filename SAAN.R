@@ -97,9 +97,11 @@ SAAN = function(pco2 = 22.3, ph = 7.31, hb = 16.7){
   aph = ph_mat$v[which.min(from_point_to_line(m = m_aph, b = b_aph, x = ph_mat$x, y = ph_mat$y))]
   bph = ph_mat$v[which.min(from_point_to_line(m = m_bph, b = b_bph, x = ph_mat$x, y = ph_mat$y))]
   bex = hb_bex_mat$v[which.min(from_point_to_line(m = m1, b = b1, x = hb_bex_mat$x_0, y = hb_bex_mat$y_0))]
+  hco3 = hco3_mat$v[which.min(from_point_to_line(m = m1, b = b1, x = hco3_mat$x, y = hco3_mat$y))]
+  tco2 = tco2_mat$v[which.min(from_point_to_line(m = m1, b = b1, x = tco2_mat$x, y = tco2_mat$y))]
   
-  result = c(aph, bph, bex)
-  names(result) = c("APH", "BPH", "BEX")
+  result = c(aph, bph, bex, hco3, tco2)
+  names(result) = c("APH", "BPH", "BEX", "hco3", "tco2")
   
   return(result)
   
