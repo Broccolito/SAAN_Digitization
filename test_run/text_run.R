@@ -1,15 +1,32 @@
 ##############################################################
-# Siggaard Andersen Nomogram Digitization
-# Author: Wanjun Gu
-# Email: wag001@ucsd.edu
-# Reference: https://www.ncbi.nlm.nih.gov/pubmed/1166141
-# Date: March 7th 2019
-# University of California, San Diego
-# UCSD School of Medicine
-# Simonson Lab of Physiological Genomics of Altitude Adaptation
+# Test Run
 ##############################################################
 
-#Make sure the rda files are accessible
+suppressPackageStartupMessages({
+  library(readxl)
+  library(knitr)
+})
+
+get_directory = function(){
+  args <- commandArgs(trailingOnly = FALSE)
+  file <- "--file="
+  rstudio <- "RStudio"
+  
+  match <- grep(rstudio, args)
+  if(length(match) > 0){
+    return(dirname(rstudioapi::getSourceEditorContext()$path))
+  }else{
+    match <- grep(file, args)
+    if (length(match) > 0) {
+      return(dirname(normalizePath(sub(file, "", args[match]))))
+    }else{
+      return(dirname(normalizePath(sys.frames()[[1]]$ofile)))
+    }
+  }
+}
+
+setwd(get_directory())
+
 SAAN = function(pco2 = 22.3, ph = 7.31, hb = 16.7){
   
   if(pco2 < 10 | pco2 > 100){
@@ -109,4 +126,30 @@ SAAN = function(pco2 = 22.3, ph = 7.31, hb = 16.7){
   return(result)
   
 }
+
+
+suppressWarnings({
+  data = read_excel("test_SAAN.xlsx")
+})
+
+pco2 = data$`Art PCO2`
+ph = data$`Art pH`
+hb = data$Hb
+
+id = data$`ID#`
+
+aph_fp = data$APH30
+bph_fp = data$BPH60
+bex_fp = data$`Base Excess`
+
+result = SAAN(pco2 = pco2[1], ph = ph[1], hb = hb[1])
+
+for(i in 2:length(ph)){
+  result = rbind(result, SAAN(pco2[i], ph[i], hb[i]))
+}
+
+result = as.data.frame(result)
+result = cbind(aph_fp, bph_fp, bex_fp, result)
+result = data.frame(result, row.names = data$`ID#`)
+kable(result)
 
