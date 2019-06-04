@@ -57,7 +57,7 @@ plot_SAAN = function(){
   x_value = paste0("x_", seq(0, 25, 0.5))
   y_value = paste0("y_", seq(0, 25, 0.5))
   
-  for(i in seq(0,25,0.5))S
+  for(i in seq(0,25,0.5))
     eval(parse(text = paste0(
       "points(hb_bex_mat$x_", i, ", hb_bex_mat$y_", i, ", cex = 0.1)"
     )))
